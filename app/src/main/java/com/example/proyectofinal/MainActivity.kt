@@ -1,6 +1,7 @@
 package com.example.proyectofinal
 
 import android.graphics.ColorFilter
+import android.graphics.Paint.Align
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,6 +40,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,6 +60,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -206,6 +210,7 @@ fun MyContent(innerPadding: PaddingValues) {
 
 @Composable
 fun ItemHero(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) -> Unit) {
+    var state by rememberSaveable { mutableStateOf(false) }
     Card(border = BorderStroke(2.dp, Color.Black),
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier
@@ -215,8 +220,10 @@ fun ItemHero(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) ->
             Image(
                 painter = painterResource(id = guitarra.imagen),
                 contentDescription = "SuperHero Avatar",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                contentScale = ContentScale.Crop,
             )
             Text(
                 text = guitarra.modelo,
@@ -227,13 +234,22 @@ fun ItemHero(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) ->
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp
             )
-            Text(
-                text = guitarra.precio,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(6.dp),
-                fontSize = 10.sp
-            )
+                Text(
+                    text = guitarra.precio,
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(6.dp),
+                    fontSize = 10.sp
+                )
+                Checkbox(
+                    checked = guitarra.favorito,
+                    onCheckedChange = { guitarra.favorito = !guitarra.favorito },
+                    enabled = true,
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .offset(0.dp, -25.dp)
+                )
+
         }
     }
 }
