@@ -1,7 +1,5 @@
 package com.example.proyectofinal
 
-import android.graphics.ColorFilter
-import android.graphics.Paint.Align
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -15,12 +13,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,41 +30,30 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -74,10 +61,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.proyectofinal.ui.theme.ProyectoFinalTheme
-import kotlinx.coroutines.launch
-import java.security.Principal
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +86,7 @@ fun Principal() {
 @Composable
 fun MyTopAppBar() {
     TopAppBar(
-        title = { Text("Guitarras Eléctricas")},
+        title = { Text("Guitarras")},
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.LightGray
         , titleContentColor = Color.Black),
         navigationIcon = {
@@ -179,7 +163,7 @@ fun GuitarGridView(innerPadding: PaddingValues) {
         contentPadding = innerPadding,
         content = {
             items(getGuitars()) {
-                ItemHero(it) {
+                ItemGuitar(it) {
                     Toast.makeText(context, it.modelo, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -209,8 +193,8 @@ fun MyContent(innerPadding: PaddingValues) {
 }
 
 @Composable
-fun ItemHero(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) -> Unit) {
-    var state by rememberSaveable { mutableStateOf(false) }
+fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) -> Unit) {
+    var state = remember { mutableStateOf(false) }
     Card(border = BorderStroke(2.dp, Color.Black),
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier
@@ -234,25 +218,79 @@ fun ItemHero(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) ->
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 12.sp
             )
-                Text(
-                    text = guitarra.precio,
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(6.dp),
-                    fontSize = 10.sp
-                )
-                Checkbox(
-                    checked = guitarra.favorito,
-                    onCheckedChange = { guitarra.favorito = !guitarra.favorito },
-                    enabled = true,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .offset(0.dp, -25.dp)
-                )
-
+            Row {
+                Column(modifier = Modifier.weight(1f)) {
+                    val checkedState = remember { mutableStateOf(guitarra.favorito) }
+                    guitarra.favorito = checkedState.value
+                    Box(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .size(24.dp)
+                            .clickable { checkedState.value = !checkedState.value }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.checkbox_off_icon),
+                            contentDescription = "Checked"
+                        )
+                        if (checkedState.value) {
+                            guitarra.favorito = checkedState.value
+                            Image(
+                                painter = painterResource(id = R.drawable.checkbox_on_icon),
+                                contentDescription = "Checked"
+                            )
+                        }
+                    }
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = guitarra.favorito.toString(),
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(6.dp),
+                        fontSize = 10.sp
+                    )
+                }
+                Column(modifier =
+                Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)) {
+                    Text(
+                        text = guitarra.precio,
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(6.dp),
+                        fontSize = 10.sp
+                    )
+                }
+            }
         }
     }
 }
+
+@Composable
+fun CustomCheckbox(
+    isChecked: Boolean
+) {
+    val checkedState = remember { mutableStateOf(isChecked) }
+    Box(
+        modifier = Modifier
+            .padding(12.dp)
+            .size(24.dp)
+            .clickable { checkedState.value = !checkedState.value }
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.checkbox_off_icon),
+            contentDescription = "Checked"
+        )
+        if (checkedState.value) {
+            Image(
+                painter = painterResource(id = R.drawable.checkbox_on_icon),
+                contentDescription = "Checked"
+            )
+        }
+    }
+}
+
 
 fun getGuitars(): List<GuitarraElectrica> {
     return listOf(
