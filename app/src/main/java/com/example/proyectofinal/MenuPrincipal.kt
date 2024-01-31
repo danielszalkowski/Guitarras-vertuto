@@ -6,6 +6,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -213,11 +215,15 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                 Column(modifier = Modifier.weight(1f)) {
                     val checkedState = remember { mutableStateOf(guitarra.favorito) }
                     guitarra.favorito = checkedState.value
+                    var interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
                     Box(
                         modifier = Modifier
                             .padding(12.dp)
                             .size(24.dp)
-                            .clickable { checkedState.value = !checkedState.value }
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null,
+                                onClick = { checkedState.value = !checkedState.value } )
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.checkbox_off_icon),
