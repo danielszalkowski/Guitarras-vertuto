@@ -11,12 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.proyectofinal.AppScreens
+import com.example.proyectofinal.GuitarraElectrica
 import com.example.proyectofinal.ItemGuitar
-import com.example.proyectofinal.getGuitars
+import com.example.proyectofinal.listaGuitarras
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FavGuitarGridView(innerPadding: PaddingValues) {
+fun FavGuitarGridView(innerPadding: PaddingValues, navController: NavController) {
+    val listaFavoritas = listaGuitarras.filter { it.favorito == true }
     val context = LocalContext.current
     LazyVerticalGrid(
         modifier = Modifier
@@ -27,10 +31,10 @@ fun FavGuitarGridView(innerPadding: PaddingValues) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = innerPadding,
         content = {
-            items(getGuitars()) {
-                ItemGuitar(it) {
-                    Toast.makeText(context, it.modelo, Toast.LENGTH_SHORT).show()
-                }
+            items(listaFavoritas) {
+                    ItemGuitar(it) {
+                        navController.navigate(route = AppScreens.pantallaDatos.route+"/"+it.modelo)
+                    }
             }
         })
 }

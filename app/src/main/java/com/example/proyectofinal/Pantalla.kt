@@ -1,6 +1,6 @@
 package com.example.proyectofinal
 
-enum class Pantallas {
+enum class Pantalla {
     MainMenu,
     Favoritas
 }
