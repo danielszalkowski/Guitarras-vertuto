@@ -1,6 +1,8 @@
 package com.example.proyectofinal
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +25,12 @@ fun AppNavigation(){
         }
         composable(route = AppScreens.pantallaBuscar.route){
             Busqueda(navController)
+        }
+        composable(route = AppScreens.pantallaAcusticas.route){
+            AcousticGridView(innerPadding = PaddingValues(2.dp), navController = navController)
+        }
+        composable(route = AppScreens.pantallaElectricas.route){
+            ElectricGridView(innerPadding = PaddingValues(2.dp), navController = navController)
         }
     }
 }

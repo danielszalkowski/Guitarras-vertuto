@@ -37,10 +37,13 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Card
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -48,11 +51,13 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,21 +72,54 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ProyectoFinalTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun Principal(navController: NavController) {
     FuncionScaffold(navController)
 }
 
+@Composable
+fun FuncionScaffold(navController: NavController) {
+    var currentScreen by rememberSaveable { mutableStateOf(Pantalla.MainMenu) }
+    val scope = rememberCoroutineScope()
+    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                MyNavigationDrawer(navController) { scope.launch { drawerState.close() } }
+            }
+        },
+        gesturesEnabled = true
+    ) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+            topBar =  { MyTopAppBar(navController) { scope.launch { drawerState.open() } } },
+            content = { innerPadding ->
+                when (currentScreen) {
+                    Pantalla.MainMenu -> GuitarGridView(innerPadding, navController)
+                    Pantalla.Favoritas -> FavGuitarGridView(innerPadding, navController)
+                }
+            },
+            bottomBar = {
+                MyBottomNavigation(
+                    currentScreen,
+                    onTabSelected = { screen -> currentScreen = screen })
+            },
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(navController: NavController) {
+fun MyTopAppBar(navController: NavController, onClickDrawer: () -> Unit) {
     TopAppBar(
         title = { Text("Guitarras") },
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer
             , titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer),
         navigationIcon = {
-            IconButton(onClick = { }) { Icon(Icons.Filled.Menu, contentDescription = "Desc", tint = MaterialTheme.colorScheme.onPrimaryContainer) }
+            IconButton(onClick = { onClickDrawer() }) { Icon(Icons.Filled.Menu, contentDescription = "Desc", tint = MaterialTheme.colorScheme.onPrimaryContainer) }
         },
         actions = {
             IconButton(onClick = { navController.navigate(route = AppScreens.pantallaBuscar.route) }) { Icon(Icons.Filled.Search, contentDescription = "Desc", tint = MaterialTheme.colorScheme.onPrimaryContainer) }
@@ -91,8 +129,6 @@ fun MyTopAppBar(navController: NavController) {
 
 @Composable
 fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Unit) {
-    var index by rememberSaveable { mutableIntStateOf(0) }
-
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -150,28 +186,42 @@ fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Uni
     }
 
 
+
+
 @Composable
-fun FuncionScaffold(navController: NavController) {
-    var currentScreen by rememberSaveable { mutableStateOf(Pantalla.MainMenu) }
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.background(MaterialTheme.colorScheme.primary),
-        topBar = { MyTopAppBar(navController) },
-        content = { innerPadding ->
-            when (currentScreen) {
-                Pantalla.MainMenu -> GuitarGridView(innerPadding, navController)
-                Pantalla.Favoritas -> FavGuitarGridView(innerPadding, navController)
-            }
-        },
-        bottomBar = { MyBottomNavigation(currentScreen, onTabSelected = { screen -> currentScreen = screen }) },
-    )
+fun MyNavigationDrawer(navController: NavController, onCloseDrawer: () -> Unit) {
+    Column(modifier = Modifier.padding(8.dp)) {
+            Text(
+                text = "Guitarras Eléctricas",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .clickable {
+                        onCloseDrawer()
+                        navController.navigate(AppScreens.pantallaElectricas.route)
+                               },
+                fontSize = 18.sp,
+                color = (MaterialTheme.colorScheme.onPrimaryContainer)
+            )
+            Text(
+                text = "Guitarras Acústicas",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .clickable {
+                        onCloseDrawer()
+                        navController.navigate(AppScreens.pantallaAcusticas.route)
+                               },
+                fontSize = 18.sp,
+                color = (MaterialTheme.colorScheme.onPrimaryContainer)
+            )
+    }
 }
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GuitarGridView(innerPadding: PaddingValues, navController: NavController) {
-    val context = LocalContext.current
     LazyVerticalGrid(
         modifier = Modifier
             .consumeWindowInsets(innerPadding)
@@ -191,7 +241,6 @@ fun GuitarGridView(innerPadding: PaddingValues, navController: NavController) {
 
 @Composable
 fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) -> Unit) {
-    var state = remember { mutableStateOf(false) }
     Card(border = BorderStroke(1.dp, Color.Black),
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier
