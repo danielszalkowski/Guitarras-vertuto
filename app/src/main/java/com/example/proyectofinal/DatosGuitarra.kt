@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +35,15 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
         contentAlignment = Alignment.Center
     ) {
         val guitar = listaGuitarras.first { it.modelo == guitarra }
+
+        IconButton(
+            onClick = { navController.navigate(AppScreens.pantallaPrincipal.route) },
+            modifier = Modifier.align(Alignment.TopEnd)
+
+        ) {
+            Icon(imageVector = Icons.Default.Close, contentDescription = "Cerrar")
+        }
+
         Column() {
             Image(
                 painter = painterResource(id = guitar.imagen),
@@ -42,7 +56,8 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
             Text(
                 fontWeight = FontWeight.Bold,
                 text = guitar.modelo,
-                modifier = Modifier.offset(10.dp)
+                modifier = Modifier
+                    .offset(10.dp)
                     .padding(top = 10.dp),
                 fontSize = 25.sp
             )

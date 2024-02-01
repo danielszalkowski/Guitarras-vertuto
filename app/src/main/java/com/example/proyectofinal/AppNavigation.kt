@@ -21,5 +21,8 @@ fun AppNavigation(){
         {
             DatosGuitarra(navController, it.arguments?.getString("guitarra"))
         }
+        composable(route = AppScreens.pantallaBuscar.route){
+            Busqueda(navController)
+        }
     }
 }

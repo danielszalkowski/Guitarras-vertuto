@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Card
@@ -41,6 +42,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -71,7 +73,7 @@ fun Principal(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar() {
+fun MyTopAppBar(navController: NavController) {
     TopAppBar(
         title = { Text("Guitarras") },
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.LightGray
@@ -80,9 +82,7 @@ fun MyTopAppBar() {
             IconButton(onClick = { }) { Icon(Icons.Filled.Menu, contentDescription = "Desc", tint = Color.Black) }
         },
         actions = {
-            IconButton(onClick = {}) { Icon(Icons.Filled.Add, contentDescription = "Desc", tint = Color.Black) }
-            Spacer(modifier = Modifier.size(6.dp))
-            IconButton(onClick = {}) { Icon(Icons.Filled.Close, contentDescription = "Desc", tint = Color.Black) }
+            IconButton(onClick = { navController.navigate(route = AppScreens.pantallaBuscar.route) }) { Icon(Icons.Filled.Search, contentDescription = "Desc", tint = Color.Black) }
         },
     )
 }
@@ -151,7 +151,7 @@ fun FuncionScaffold(navController: NavController) {
     var currentScreen by rememberSaveable { mutableStateOf(Pantalla.MainMenu) }
     Scaffold(
         modifier = Modifier.background(Color.White),
-        topBar = { MyTopAppBar() },
+        topBar = { MyTopAppBar(navController) },
         content = { innerPadding ->
             when (currentScreen) {
                 Pantalla.MainMenu -> GuitarGridView(innerPadding, navController)
@@ -223,7 +223,7 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                             .clickable(
                                 interactionSource = interactionSource,
                                 indication = null,
-                                onClick = { checkedState.value = !checkedState.value } )
+                                onClick = { checkedState.value = !checkedState.value })
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.checkbox_off_icon),
