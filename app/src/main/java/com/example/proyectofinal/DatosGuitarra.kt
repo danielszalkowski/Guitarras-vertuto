@@ -1,6 +1,7 @@
 package com.example.proyectofinal
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,8 +32,8 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
     Box(
         modifier = Modifier
             .fillMaxSize(1f)
-            .padding(8.dp)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         val guitar = listaGuitarras.first { it.modelo == guitarra }
@@ -41,7 +43,7 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
             modifier = Modifier.align(Alignment.TopEnd)
 
         ) {
-            Icon(imageVector = Icons.Default.Close, contentDescription = "Cerrar")
+            Icon(imageVector = Icons.Default.Close, contentDescription = "Cerrar", tint = MaterialTheme.colorScheme.onPrimaryContainer)
         }
 
         Column() {
@@ -59,22 +61,26 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
                 modifier = Modifier
                     .offset(10.dp)
                     .padding(top = 10.dp),
-                fontSize = 25.sp
+                fontSize = 25.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
                 text = "· Color: ${guitar.color}",
                 modifier = Modifier.offset(10.dp),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
                 text = "· Número de trastes: ${guitar.nTrastes}",
                 modifier = Modifier.offset(10.dp),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
                 text = "· Precio: ${guitar.precio}",
                 modifier = Modifier.offset(10.dp),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }

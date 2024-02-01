@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -39,6 +40,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -64,7 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.proyectofinal.ui.theme.ProyectoFinalTheme
+import com.example.compose.ProyectoFinalTheme
 
 @Composable
 fun Principal(navController: NavController) {
@@ -76,13 +78,13 @@ fun Principal(navController: NavController) {
 fun MyTopAppBar(navController: NavController) {
     TopAppBar(
         title = { Text("Guitarras") },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.LightGray
-            , titleContentColor = Color.Black),
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer
+            , titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer),
         navigationIcon = {
-            IconButton(onClick = { }) { Icon(Icons.Filled.Menu, contentDescription = "Desc", tint = Color.Black) }
+            IconButton(onClick = { }) { Icon(Icons.Filled.Menu, contentDescription = "Desc", tint = MaterialTheme.colorScheme.onPrimaryContainer) }
         },
         actions = {
-            IconButton(onClick = { navController.navigate(route = AppScreens.pantallaBuscar.route) }) { Icon(Icons.Filled.Search, contentDescription = "Desc", tint = Color.Black) }
+            IconButton(onClick = { navController.navigate(route = AppScreens.pantallaBuscar.route) }) { Icon(Icons.Filled.Search, contentDescription = "Desc", tint = MaterialTheme.colorScheme.onPrimaryContainer) }
         },
     )
 }
@@ -92,51 +94,53 @@ fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Uni
     var index by rememberSaveable { mutableIntStateOf(0) }
 
     NavigationBar(
-        containerColor = Color.LightGray,
-        contentColor = Color.Black
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
             NavigationBarItem(
+                alwaysShowLabel = false,
                 selected = currentScreen ==  Pantalla.MainMenu,
                 onClick = {onTabSelected(Pantalla.MainMenu)},
                 icon = { if(currentScreen ==  Pantalla.MainMenu) {
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = "Home Icon",
-                        tint = Color.Black
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Outlined.Home,
                         contentDescription = "Home Icon",
-                        tint = Color.Black
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
 
                 },
                 label = {
-                    Text(text = "Guitarras",
-                    color = Color.Black)
+                    Text(text = "Inicio",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
             )
             NavigationBarItem(
+                alwaysShowLabel = false,
                 selected = currentScreen ==  Pantalla.Favoritas,
                 onClick = {onTabSelected(Pantalla.Favoritas)},
                 icon = {
                     if(currentScreen ==  Pantalla.Favoritas) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
-                            contentDescription = "Person Icon",
-                            tint = Color.Black
+                            contentDescription = "Fav Icon",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Person Icon",
-                        tint = Color.Black
+                        contentDescription = "Fav Icon",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 },
                 label = { Text(text = "Favoritas",
-                    color = Color.Black)
+                    color = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
             )
 
@@ -150,7 +154,8 @@ fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Uni
 fun FuncionScaffold(navController: NavController) {
     var currentScreen by rememberSaveable { mutableStateOf(Pantalla.MainMenu) }
     Scaffold(
-        modifier = Modifier.background(Color.White),
+        containerColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.background(MaterialTheme.colorScheme.primary),
         topBar = { MyTopAppBar(navController) },
         content = { innerPadding ->
             when (currentScreen) {
@@ -170,8 +175,7 @@ fun GuitarGridView(innerPadding: PaddingValues, navController: NavController) {
     LazyVerticalGrid(
         modifier = Modifier
             .consumeWindowInsets(innerPadding)
-            .padding(8.dp)
-            .background(Color.White),
+            .padding(8.dp),
         columns = GridCells.Fixed(1),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -188,12 +192,12 @@ fun GuitarGridView(innerPadding: PaddingValues, navController: NavController) {
 @Composable
 fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) -> Unit) {
     var state = remember { mutableStateOf(false) }
-    Card(border = BorderStroke(2.dp, Color.Black),
+    Card(border = BorderStroke(1.dp, Color.Black),
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier
             .width(250.dp)
             .clickable { onItemSelected(guitarra) }) {
-        Column() {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)) {
             Image(
                 painter = painterResource(id = guitarra.imagen),
                 contentDescription = "Guitar image",
@@ -204,7 +208,7 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
             )
             Text(
                 text = guitarra.modelo,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             Text(
                 text = guitarra.color,

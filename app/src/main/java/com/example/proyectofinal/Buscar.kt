@@ -3,6 +3,7 @@ package com.example.proyectofinal
 import android.graphics.Paint.Align
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,9 +41,11 @@ import androidx.navigation.compose.rememberNavController
 fun Busqueda(navController: NavController){
     var query by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)) {
         SearchBar(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary),
             query = query,
             onQueryChange = { query = it },
             onSearch = {
@@ -72,19 +76,17 @@ fun Busqueda(navController: NavController){
 
 @Composable
 fun GuitarraBuscarCard(modelo: String, navController: NavController){
-    Card {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .background(Color.Transparent)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(top = 4.dp, bottom = 4.dp)
                 .clickable {
                     navController.navigate(AppScreens.pantallaDatos.route + "/" + modelo)
                 }
         ) {
             Text(text = "$modelo", fontSize = 25.sp, modifier = Modifier.align(Alignment.CenterStart))
         }
-    }
 }
 
 
