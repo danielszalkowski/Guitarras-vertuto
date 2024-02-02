@@ -1,8 +1,10 @@
 package com.example.proyectofinal
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,20 +32,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-@OptIn(ExperimentalLayoutApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ElectricGridView(innerPadding: PaddingValues, navController: NavController) {
-    Box(
+    Scaffold (
+        topBar = {
+            AppBarElectricas(navController)
+        }
+    ) {
+    ContentElectricas(innerPadding, navController)
+    }
+
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ContentElectricas(innerPadding: PaddingValues, navController: NavController){
+    Column(
         modifier = Modifier
             .fillMaxSize(1f)
-            .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(top = 56.dp)
     ) {
+
+
         LazyVerticalGrid(
             modifier = Modifier
                 .consumeWindowInsets(innerPadding)
-                .padding(8.dp)
-                .offset(y = 64.dp),
+                .padding(8.dp),
             columns = GridCells.Fixed(1),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -54,26 +71,28 @@ fun ElectricGridView(innerPadding: PaddingValues, navController: NavController) 
                     }
                 }
             })
-        Box (
+    }
+}
+@Composable
+fun AppBarElectricas(navController: NavController) {
+    Box (
+        modifier = Modifier
+            .fillMaxWidth(1f)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .height(64.dp)
+    ){
+        IconButton(
+            onClick = { navController.navigate(AppScreens.pantallaPrincipal.route) },
             modifier = Modifier
-                .fillMaxWidth(1f)
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .height(64.dp)
-                .align(Alignment.TopCenter)
-        ){
-            IconButton(
-                onClick = { navController.navigate(AppScreens.pantallaPrincipal.route) },
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-            ) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Volver", tint = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-            Text(
-                text = "Guitarras Eléctricas",
-                fontSize = 20.sp,
-                modifier = Modifier.align(Alignment.Center),
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+                .align(Alignment.CenterStart)
+        ) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Volver", tint = MaterialTheme.colorScheme.onPrimaryContainer)
         }
+        Text(
+            text = "Guitarras Eléctricas",
+            fontSize = 20.sp,
+            modifier = Modifier.align(Alignment.Center),
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
     }
 }
