@@ -73,6 +73,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ProyectoFinalTheme
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @Composable
 fun Principal(navController: NavController) {
@@ -290,6 +291,22 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                             )
                         }
                     }
+                }
+                Column(modifier =
+                Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)) {
+                    var texto = "Sin puntuar"
+                    if (guitarra.puntuacion != null) {
+                        texto = "${guitarra.puntuacion?.roundToInt()}/10"
+                    }
+                    Text(
+                        text = texto,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(6.dp),
+                        fontSize = 10.sp
+                    )
                 }
                 Column(modifier =
                 Modifier

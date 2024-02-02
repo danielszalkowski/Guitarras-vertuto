@@ -2,6 +2,7 @@ package com.example.proyectofinal
 
 import android.graphics.Paint.Align
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +44,9 @@ import androidx.navigation.compose.rememberNavController
 fun Busqueda(navController: NavController){
     var query by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
-    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.primary)) {
         SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -76,6 +81,7 @@ fun Busqueda(navController: NavController){
 
 @Composable
 fun GuitarraBuscarCard(modelo: String, navController: NavController){
+    var guitar = listaGuitarras.first { it.modelo == modelo }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,7 +91,8 @@ fun GuitarraBuscarCard(modelo: String, navController: NavController){
                     navController.navigate(AppScreens.pantallaDatos.route + "/" + modelo)
                 }
         ) {
-            Text(text = "$modelo", fontSize = 25.sp, modifier = Modifier.align(Alignment.CenterStart))
+            Image(painter = painterResource(id = guitar.imagen), contentDescription = "Imagen guitarra", Modifier.size(50.dp).padding(start = 8.dp))
+            Text(text = "$modelo", fontSize = 25.sp, modifier = Modifier.align(Alignment.CenterStart).padding(start = 58.dp))
         }
 }
 
