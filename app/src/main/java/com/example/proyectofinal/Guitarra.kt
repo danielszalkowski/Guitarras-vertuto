@@ -2,7 +2,15 @@ package com.example.proyectofinal
 
 import androidx.annotation.DrawableRes
 
-data class GuitarraElectrica(val modelo: String, val color: String, val nTrastes: Int, val precio: String, @DrawableRes var imagen: Int, var favorito: Boolean = false, var tipo: String)
+data class GuitarraElectrica(val modelo: String,
+                             val color: String,
+                             val nTrastes: Int,
+                             val precio: String,
+                             @DrawableRes var imagen: Int,
+                             var favorito: Boolean = false,
+                             var tipo: String,
+                             var puntuacion: Int = 0
+    )
 
 var listaGuitarras = mutableListOf(
     GuitarraElectrica("ESP LTD EX-400", "Blanco", 22, "1000€", R.drawable.ltdex400, tipo = "Electrica"),
