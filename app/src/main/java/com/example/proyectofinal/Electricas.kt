@@ -89,7 +89,7 @@ fun AppBarElectricas(navController: NavController) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Volver", tint = MaterialTheme.colorScheme.onPrimaryContainer)
         }
         Text(
-            text = "Guitarras Eléctricas",
+            text = "Guitarras eléctricas",
             fontSize = 20.sp,
             modifier = Modifier.align(Alignment.Center),
             color = MaterialTheme.colorScheme.onPrimaryContainer
