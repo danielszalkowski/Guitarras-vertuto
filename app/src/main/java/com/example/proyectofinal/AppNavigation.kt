@@ -32,5 +32,13 @@ fun AppNavigation(){
         composable(route = AppScreens.pantallaElectricas.route){
             ElectricGridView(innerPadding = PaddingValues(2.dp), navController = navController)
         }
+        composable(route = AppScreens.pantallaGuitarrasBuscar.route + "/{guitarra}",
+            arguments = listOf(navArgument(name = "guitarra"){
+                type = NavType.StringType
+            }))
+        {
+            //ElectricGridView(innerPadding = PaddingValues(2.dp), navController = navController)
+            BusquedaGridView(PaddingValues(2.dp), navController, it.arguments?.getString("guitarra")!!)
+        }
     }
 }

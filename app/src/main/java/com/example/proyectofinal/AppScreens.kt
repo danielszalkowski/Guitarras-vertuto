@@ -6,4 +6,5 @@ sealed class AppScreens(val route:String){
     object pantallaBuscar: AppScreens("pantalla_buscar")
     object pantallaAcusticas: AppScreens("pantalla_acusticas")
     object pantallaElectricas: AppScreens("pantalla_electricas")
+    object pantallaGuitarrasBuscar: AppScreens("pantalla_guitarras_buscar")
 }
