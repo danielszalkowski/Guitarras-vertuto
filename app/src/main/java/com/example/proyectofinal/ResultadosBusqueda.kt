@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,9 +67,9 @@ fun ContentBusqueda(innerPadding: PaddingValues, navController: NavController,  
             contentPadding = innerPadding,
             content = {
                 items(listaGuitarras.filter { it.modelo.contains(guitarra, true) }) {
-                    ItemGuitar(it) {
-                        navController.navigate(route = AppScreens.pantallaDatos.route + "/" + it.modelo)
-                    }
+                        ItemGuitar(it) {
+                            navController.navigate(route = AppScreens.pantallaDatos.route + "/" + it.modelo)
+                        }
                 }
             })
     }
@@ -89,7 +90,7 @@ fun AppBarBusqueda(navController: NavController) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Volver", tint = MaterialTheme.colorScheme.onPrimaryContainer)
         }
         Text(
-            text = "Resultados búsqueda",
+            text = "Resultados de la búsqueda",
             fontSize = 20.sp,
             modifier = Modifier.align(Alignment.Center),
             color = MaterialTheme.colorScheme.onPrimaryContainer

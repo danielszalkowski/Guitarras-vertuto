@@ -9,6 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -200,7 +201,7 @@ fun MyNavigationDrawer(navController: NavController, onCloseDrawer: () -> Unit) 
                     .clickable {
                         onCloseDrawer()
                         navController.navigate(AppScreens.pantallaElectricas.route)
-                               },
+                    },
                 fontSize = 18.sp,
                 color = (MaterialTheme.colorScheme.onPrimaryContainer)
             )
@@ -259,11 +260,13 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
             Text(
                 text = guitarra.modelo,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Text(
                 text = guitarra.color,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Row {
                 Column(modifier = Modifier.weight(1f)) {
@@ -279,10 +282,17 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                                 indication = null,
                                 onClick = { checkedState.value = !checkedState.value })
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.checkbox_off_icon),
-                            contentDescription = "Checked"
-                        )
+                        if (isSystemInDarkTheme()){
+                            Image(
+                                painter = painterResource(id = R.drawable.checkbox_off_icon_dark),
+                                contentDescription = "Checked"
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = R.drawable.checkbox_off_icon_light),
+                                contentDescription = "Checked"
+                            )
+                        }
                         if (checkedState.value) {
                             guitarra.favorito = checkedState.value
                             Image(
@@ -305,7 +315,8 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(6.dp),
-                        fontSize = 10.sp
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
                 Column(modifier =
@@ -317,7 +328,8 @@ fun ItemGuitar(guitarra: GuitarraElectrica, onItemSelected: (GuitarraElectrica) 
                         modifier = Modifier
                             .align(Alignment.End)
                             .padding(6.dp),
-                        fontSize = 10.sp
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
