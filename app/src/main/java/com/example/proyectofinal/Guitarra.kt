@@ -15,7 +15,7 @@ data class GuitarraElectrica(val modelo: String,
 var listaGuitarras = mutableListOf(
     GuitarraElectrica("ESP LTD EX-400", "Blanco", 22, "1000€", R.drawable.ltdex400, tipo = "Electrica"),
     GuitarraElectrica("Defecaster", "Blanco", 0, "Precio incalculable", R.drawable.defecaster, tipo = "Eléctrica"),
-    GuitarraElectrica("Gibson David Gilmour Strat", "Negro", 22, "1500€", R.drawable.fenderdavidgilmour, tipo = "Electrica"),
+    GuitarraElectrica("Fender David Gilmour Strat", "Negro", 22, "1500€", R.drawable.fenderdavidgilmour, tipo = "Electrica"),
     GuitarraElectrica("Orangewood Echo", "Madera clara", 20, "350€", R.drawable.orangewoodecho, tipo = "Acustica"),
     GuitarraElectrica("Gibson ES-335", "Rojo cereza", 22, "2700€",R.drawable.gibsones335, tipo = "Electrica"),
     GuitarraElectrica("Harley Benton CST-24", "Negro", 24, "250€",R.drawable.hbentoncst24, tipo = "Electrica"),
