@@ -132,10 +132,16 @@ fun MyTopAppBar(navController: NavController, onClickDrawer: () -> Unit) {
 @Composable
 fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Unit) {
     NavigationBar(
+
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
             NavigationBarItem(
+                colors = androidx.compose.material3.NavigationBarItemDefaults
+                    .colors(
+                        selectedIconColor = MaterialTheme.colorScheme.primaryContainer,
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
                 alwaysShowLabel = false,
                 selected = currentScreen ==  Pantalla.MainMenu,
                 onClick = {onTabSelected(Pantalla.MainMenu)},
@@ -160,6 +166,11 @@ fun MyBottomNavigation(currentScreen: Pantalla, onTabSelected: (Pantalla) -> Uni
                 }
             )
             NavigationBarItem(
+                colors = androidx.compose.material3.NavigationBarItemDefaults
+                    .colors(
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
                 alwaysShowLabel = false,
                 selected = currentScreen ==  Pantalla.Favoritas,
                 onClick = {onTabSelected(Pantalla.Favoritas)},
