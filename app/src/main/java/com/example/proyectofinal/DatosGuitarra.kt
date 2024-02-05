@@ -36,7 +36,12 @@ import kotlin.math.roundToInt
 
 @Composable
 fun DatosGuitarra(navController: NavController, guitarra: String?) {
-    var sliderValue = remember { mutableStateOf(0f) }
+    val guitar = listaGuitarras.first { it.modelo == guitarra }
+    var flotador = 0f
+    if (guitar.puntuacion != null) {
+        flotador = guitar.puntuacion!!
+    }
+    var sliderValue = remember { mutableStateOf(flotador/10) }
     Box(
         modifier = Modifier
             .fillMaxSize(1f)
@@ -44,7 +49,6 @@ fun DatosGuitarra(navController: NavController, guitarra: String?) {
             .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
-        val guitar = listaGuitarras.first { it.modelo == guitarra }
         val context  = LocalContext.current
         IconButton(
             onClick = { navController.navigate(AppScreens.pantallaPrincipal.route) },
