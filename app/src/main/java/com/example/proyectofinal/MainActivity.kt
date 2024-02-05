@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -93,7 +95,6 @@ fun MainPreview(){
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
-        delay(3000)
         navController.popBackStack()
         navController.navigate(AppScreens.pantallaPrincipal.route)
     }
@@ -107,7 +108,7 @@ fun Splash(){
         contentAlignment = Alignment.Center){
         Column {
             Image(painter = painterResource(id = R.drawable.logoguitarras2), contentDescription = "Logo", modifier = Modifier.size(150.dp).align(Alignment.CenterHorizontally))
-            Text("Guitarras vertuto", fontSize = 40.sp, color = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.align(Alignment.CenterHorizontally), fontFamily = papyrus)
+            Text("Guitarras vertuto", fontSize = 40.sp, color = Color(0xFF355CA8), modifier = Modifier.align(Alignment.CenterHorizontally), fontFamily = papyrus)
         }
 
     }
