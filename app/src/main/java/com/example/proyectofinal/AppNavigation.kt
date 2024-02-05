@@ -1,5 +1,6 @@
 package com.example.proyectofinal
 
+import android.window.SplashScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
@@ -12,7 +13,10 @@ import androidx.navigation.navArgument
 @Composable
 fun AppNavigation(){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AppScreens.pantallaPrincipal.route) {
+    NavHost(navController = navController, startDestination = AppScreens.pantallaSplash.route) {
+        composable(AppScreens.pantallaSplash.route) {
+            SplashScreen(navController)
+        }
         composable(route = AppScreens.pantallaPrincipal.route) {
             FuncionScaffold(navController)
         }
@@ -37,7 +41,6 @@ fun AppNavigation(){
                 type = NavType.StringType
             }))
         {
-            //ElectricGridView(innerPadding = PaddingValues(2.dp), navController = navController)
             BusquedaGridView(PaddingValues(2.dp), navController, it.arguments?.getString("guitarra")!!)
         }
     }

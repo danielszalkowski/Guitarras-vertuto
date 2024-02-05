@@ -42,7 +42,6 @@ fun ElectricGridView(innerPadding: PaddingValues, navController: NavController) 
     ) {
     ContentElectricas(innerPadding, navController)
     }
-
 }
 
 @OptIn(ExperimentalLayoutApi::class)

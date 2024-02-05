@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -46,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -58,10 +60,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.compose.ProyectoFinalTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,3 +88,31 @@ class MainActivity : ComponentActivity() {
 fun MainPreview(){
     AppNavigation()
 }
+
+
+@Composable
+fun SplashScreen(navController: NavController) {
+    LaunchedEffect(key1 = true) {
+        delay(3000)
+        navController.popBackStack()
+        navController.navigate(AppScreens.pantallaPrincipal.route)
+    }
+    Splash()
+}
+@Composable
+fun Splash(){
+    Box(modifier = Modifier
+        .fillMaxSize(1f)
+        .background(Color.White),
+        contentAlignment = Alignment.Center){
+        Column {
+            Image(painter = painterResource(id = R.drawable.logoguitarras2), contentDescription = "Logo", modifier = Modifier.size(150.dp).align(Alignment.CenterHorizontally))
+            Text("Guitarras vertuto", fontSize = 40.sp, color = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.align(Alignment.CenterHorizontally), fontFamily = papyrus)
+        }
+
+    }
+}
+
+val papyrus = FontFamily(
+   Font(R.font.papyrus)
+)
