@@ -95,6 +95,7 @@ fun MainPreview(){
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
+        delay(2000)
         navController.popBackStack()
         navController.navigate(AppScreens.pantallaPrincipal.route)
     }
